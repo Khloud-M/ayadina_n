@@ -1,16 +1,15 @@
 <template>
-    <header-component></header-component>
-    <base-container>
+    <ui-base-container>
         <ui-breadCrumb :to="localePath('/profile/settings')">
-            <template v-slot:mainPage>الاعدادات</template>
-            <template v-slot:currentPage>اعدادات الاشعارات </template>
+            <template v-slot:mainPage>{{ $t("Settings") }}</template>
+            <template v-slot:currentPage> {{ $t("Notification_settings") }} </template>
         </ui-breadCrumb>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <base-card class="p-5">
                     <form @submit.prevent="updateNotifyStatus">
                         <div class="bg-light p-3 flex-between rounded-3 w-75 m-auto shadow-sm">
-                            <h5> تفعيل الاشعارات </h5>
+                            <h5> {{ $t("Activate_notifications") }}</h5>
                             <InputSwitch v-model="checked" @input="updateNotifyStatus" />
                         </div>
                     </form>
@@ -18,8 +17,8 @@
                 </base-card>
             </div>
         </div>
-    </base-container>
-    <footer-component></footer-component>
+    </ui-base-container>
+
 </template>
 <script>
 import { useAuthStore } from '@/store/authStore'

@@ -14,7 +14,46 @@
     "termsAndConditions":"الشروط والأحكام",
     "clintServ":"خدمة عملاء",
     "follow_us":"تابعنا على " ,
-    "descriptionWEB":" تصميم وبرمجة أوامر الشبكة - جميع الحقوق محفوظة لموقع ايادينا"
+    "descriptionWEB":" تصميم وبرمجة أوامر الشبكة - جميع الحقوق محفوظة لموقع ايادينا" ,
+    "personal________________________profile":"personal________________________profile",
+    "add_Skill":"إضافة المهارة",
+    "Commission_payment":"دفع العمولة ",
+    "Settings":"الاعدادت",
+    "conversation":"المحادثة",
+    "myRates":"تقييماتي",
+    "My_specific_requests":" طلباتي الخاصة",
+    "name":"الاسم",
+    "phoneNumber":"رقم الجوال " ,
+    "email":"البريد الإلكتروني" ,
+    "city":"المدينة",
+    "Region":"المنطقة",
+    "MembershipNo":"رقم العضوية ",
+    "number_of_visits" :"عدد الزيارات",
+    "description":"الوصف" ,
+    "Setting________________________":"Setting________________________",
+    "Notification_settings":"اعدادات الاشعارات ",
+    "edit_personal_profile":"تعديل الملف الشخصي ",
+    "edit_phone":"تغيير رقم الجوال ",
+    "edit_email":"تغيير البريد الالكتروني ",
+    "edit_password":"تغييير كلمة المرور ",
+
+    "deletAccount":"حذف الحساب " ,
+    "Activate_notifications":"تفعيل الاشعارات",
+    "save_edits":"حفظ التعديلات" ,
+    "Enter_the_new_mobile_number_and_password":"ادخل رقم الجوال الجديد وكلمة المرور ",
+    "password":"كلمة المرور" ,
+    "continuation":"استمرار",
+    "Enter_your_new_mobile_number_and_email" :"ادخل رقم الجوال والبريد الالكتروني الجديد",
+    "New_email":"البريد الالكتروني الجديد",
+    "Current_Password":"كلمة المرور الحالية",
+    "New_Password":"كلمة المرور الجديدة",
+    "Confirm_current_password":"تأكيد كلمة المرور الحالية",
+    "save":"حفظ" ,
+    "Do_you_really_want_to_delete_the_account?":" هل بالفعل تريد حذف الحساب " ,
+    "The_account_has_been_successfully_deleted" :"تم حذف الحساب  بنجاح ",
+    "order_number":"رقم الطلب "
+
+
 
     
 }

@@ -1,6 +1,6 @@
 <template>
     <ui-main-title>
-        الملف الشخصي
+        {{ $t("personalFile") }}
     </ui-main-title>
     <profile-tabs></profile-tabs>
     <div class="row justify-content-center">
@@ -9,7 +9,7 @@
                 <ui-base-card v-for="order in orders" :key="order.id" :id="order.id" class="mb-3 flex-between "
                     @click="selectId">
                     <div>
-                        <span> رقم الطلب : </span>
+                        <span> {{ $t("order_number") }} : </span>
                         <span>{{ order.order_number }}</span>
                     </div>
                     <NuxtLink :to="localePath('/profile/specialOrders/' + `${order.id}`)" class="f-13 text-dark">
@@ -26,6 +26,7 @@
         </div>
     </div>
 </template>
+
 <script>
 
 import { useAuthStore } from '@/store/authStore';

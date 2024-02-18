@@ -1,12 +1,12 @@
 <template>
     <ui-breadCrumb :to="localePath('/profile/specialOrders')">
-        <template v-slot:mainPage>طلباتي </template>
-        <template v-slot:currentPage> تفاصيل الطلب </template>
+        <template v-slot:mainPage> {{ $t("myorder") }} </template>
+        <template v-slot:currentPage>  {{ $t("Order_details") }}   </template>
     </ui-breadCrumb>
     <div>
         <ui-base-card class="flex-between mb-3">
             <div>
-                <span class="text-muted text-bold"> رقم الطلب : </span>
+                <span class="text-muted text-bold">  {{ $t("order_number") }} : </span>
                 <span class="font-bold text-muted-d">{{ ordersDetails.order_number }}</span>
             </div>
             <div>
@@ -20,19 +20,19 @@
         </ui-base-card>
         <ui-base-card class="mb-3">
             <div>
-                <span class="text-muted "> القسم الرئيسي : </span>
+                <span class="text-muted ">  {{ $t("Main_section") }} : </span>
                 <span class="font-bold text-muted-d">{{ ordersDetails.category }}</span>
             </div>
         </ui-base-card>
         <ui-base-card class="mb-3">
             <div>
-                <span class="text-muted"> القسم الفرعي : </span>
+                <span class="text-muted">  {{ $t("Subsection") }}  : </span>
                 <span class="font-bold text-muted-d">{{ ordersDetails.sub_category }}</span>
             </div>
         </ui-base-card>
         <ui-base-card class="mb-3">
             <div>
-                <div class="text-muted-d font-bold mb-2"> وصف الطلب : </div>
+                <div class="text-muted-d font-bold mb-2">  {{ $t("Description_of_the_request") }} : </div>
                 <p class="text-muted ">
                     {{ ordersDetails.description }}
                 </p>
@@ -42,28 +42,28 @@
     </div>
 
 
-    <Dialog v-model:visible="visible" header=" هل بالفعل تريد حذف الطلب " modal :style="{ width: '50rem' }"
+    <Dialog v-model:visible="visible" :header="$t('Do_you_really_want_to_delete_the_order')" modal :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="modal-exclam-mark mb-3" />
 
         <div class="flex-center gap-10">
-            <button type="button" class="btn btn-danger main_btn" label="Show" @click="remove">نعم</button>
-            <button type="button" class="btn btn-primary main_btn" label="Show" @click=" visible = false"> لا </button>
+            <button type="button" class="btn btn-danger main_btn" label="Show" @click="remove"> {{ $t("yes")  }}</button>
+            <button type="button" class="btn btn-primary main_btn" label="Show" @click=" visible = false"> {{ $t("no")  }} </button>
         </div>
     </Dialog>
-    <Dialog v-model:visible="visible2" modal header="  تم حذف الطلب بنجاح " :style="{ width: '50rem' }"
+    <Dialog v-model:visible="visible2" modal :header="$t('The_request_has_been_successfully_deleted')" :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="modal-exclam-mark mb-3" />
     </Dialog>
-    <Dialog v-model:visible="visible3" header=" وصف الطلب  " modal :style="{ width: '50rem' }"
+    <Dialog v-model:visible="visible3" :header="$t('Description_of_the_request')" modal :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <form @submit.prevent="update">
-            <InputsFormControl :placeholder="descripe" v-model.trim="ordersDetails.title">اسم الطلب
+            <InputsFormControl :placeholder="descripe" v-model.trim="ordersDetails.title">   {{ $t("nameofOrder") }}   
             </InputsFormControl>
-            <InputsFormControl textarea v-model.trim="ordersDetails.description">وصف الطلب
+            <InputsFormControl textarea v-model.trim="ordersDetails.description"> {{ $t("Description_of_the_request") }}  
             </InputsFormControl>
             <div class="flex-center">
-                <ui-base-button mode="main_btn" @click=" visible3 = false, visible4 = true"> حفظ التعديلات </ui-base-button>
+                <ui-base-button mode="main_btn" @click=" visible3 = false, visible4 = true">  {{ $t("save_edits") }}  </ui-base-button>
             </div>
         </form>
 
@@ -72,7 +72,7 @@
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <font-awesome-icon icon="fa-regular fa-circle-check" class="modal-exclam-mark mb-5 main_color" />
         <div class="flex-center">
-            <ui-base-button mode="main_btn" @click="visible4 = false"> رجوع للطلب </ui-base-button>
+            <ui-base-button mode="main_btn" @click="visible4 = false"> {{ $t("Back_to_order") }} </ui-base-button>
         </div>
     </Dialog>
 </template>

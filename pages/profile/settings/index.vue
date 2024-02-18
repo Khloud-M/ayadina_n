@@ -1,49 +1,49 @@
 <template>
-        <ui-main-title>
-            الملف الشخصي
+      <ui-main-title>
+            {{ $t("personalFile") }}
         </ui-main-title>
         <profile-tabs></profile-tabs>
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <ui-base-card  class="mb-3">
                     <NuxtLink :to="localePath('/profile/settings/notification')" class=" flex-between  text-dark f-13">
-                        <h6> اعدادات الاشعارات </h6>
+                        <h6>{{ $t("Notification_settings") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </NuxtLink>
                 </ui-base-card >
                 <ui-base-card  class="mb-3">
                     <NuxtLink  :to="localePath('/profile/settings/editProfile')" class=" flex-between  text-dark f-13">
-                        <h6> تعديل الملف الشخصي </h6>
+                        <h6>{{ $t("edit_personal_profile") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </NuxtLink>
                 </ui-base-card >
                 <ui-base-card  class="mb-3">
                     <NuxtLink  :to="localePath('/profile/settings/phoneNumber')"  class=" flex-between  text-dark f-13">
-                        <h6> تغيير رقم الجوال </h6>
+                        <h6>{{ $t("edit_phone") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </NuxtLink>
                 </ui-base-card >
                 <ui-base-card  class="mb-3">
                     <NuxtLink :to="localePath('/profile/settings/email')" class=" flex-between  text-dark f-13">
-                        <h6> تغيير البريد الالكتروني </h6>
+                        <h6>{{ $t("edit_email") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </NuxtLink>
                 </ui-base-card >
                 <ui-base-card  class="mb-3">
                     <NuxtLink  :to="localePath('/profile/settings/password')" class=" flex-between  text-dark f-13">
-                        <h6> تغييير كلمة المرور </h6>
+                        <h6>{{ $t("edit_password") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </NuxtLink>
                 </ui-base-card >
                 <ui-base-card  class="mb-3 border-danger">
                     <div class=" flex-between  text-danger f-13 cursor_poninter" @click="home">
-                        <h6> تسجيل الخروج </h6>
+                        <h6>{{ $t("logout") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </div>
                 </ui-base-card >
                 <ui-base-card  class="mb-3 border-danger">
                     <div class=" flex-between   f-13 text-danger cursor_poninter" @click="visible = true">
-                        <h6> حذف الحساب </h6>
+                        <h6>{{ $t("deletAccount") }}</h6>
                         <font-awesome-icon icon="fa-solid fa-chevron-left " />
                     </div>
                 </ui-base-card >
@@ -51,7 +51,7 @@
         </div>
  
 
-    <Dialog v-model:visible="visible" header=" هل بالفعل تريد حذف الحساب  " modal :style="{ width: '50rem' }"
+    <Dialog v-model:visible="visible" :header="$t('Do_you_really_want_to_delete_the_account')" modal :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="modal-exclam-mark mb-3" />
 
@@ -60,10 +60,11 @@
             <button type="button" class="  main_btn btn-primary" label="Show" @click="remove"> لا </button>
         </div>
     </Dialog>
-    <Dialog v-model:visible="visible2" modal header="  تم حذف الحساب  بنجاح " :style="{ width: '50rem' }"
+    <Dialog v-model:visible="visible2" modal :header="$t('The_account_has_been_successfully_deleted') " :style="{ width: '50rem' }"
         :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="modal-exclam-mark" />
     </Dialog>
+
 </template>
 <script>
 

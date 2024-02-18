@@ -1,17 +1,17 @@
 <template>
-        <div class="row justify-content-center">
+       <div class="row justify-content-center">
             <div class="col-md-7">
                 <UiBreadCrumb :to="localePath('/')">
-                    <template v-slot:mainPage>الاعدادات</template>
-                    <template v-slot:currentPage> تغيير رقم الجوال </template>
+                    <template v-slot:mainPage> {{ $t("Settings") }} </template>
+                    <template v-slot:currentPage> {{ $t("edit_phone") }}</template>
                 </UiBreadCrumb>
                 <ui-base-card class="p-5 rounded-4">
-                <ui-main-title>ادخل رقم الجوال الجديد وكلمة المرور </ui-main-title>
+                <ui-main-title>{{ $t("Enter_the_new_mobile_number_and_password") }}</ui-main-title>
                     <form  @submit.prevent="changePhone">
                         <inputs-vefication-code />
                         <div class="form-group">
                             <label class="form-label" id="phone">
-                                رقم الجوال
+                                {{ $t("phoneNumber") }}
                                 <span class="text-danger"> * </span>
                             </label>
                             <div class="with_cun_select">
@@ -39,17 +39,18 @@
                                 </div>
                             </div>
                         </div>
-                        <inputs-form-control mode="form-control" type="password" id="password" v-model.trim="password"> كلمة المرور  </inputs-form-control>
+                        <inputs-form-control mode="form-control" type="password" id="password" v-model.trim="password"> {{ $t( "password") }} </inputs-form-control>
 
                         <div class="flex-center mb-3">
-                            <ui-base-button mode="main_btn lg "  >
-                                استمرار
+                            <ui-base-button mode="main_btn lg "  
+                                > {{ $t( "continuation") }}
                             </ui-base-button>
                         </div>
                     </form>
                 </ui-base-card>
             </div>
         </div>
+
 </template>
 <script>
 import { useAuthStore } from '@/store/authStore'

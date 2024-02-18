@@ -37,6 +37,7 @@
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
     "cookie-universal-nuxt": "^2.2.2",
+    "defu": "^6.1.4",
     "jquery": "^3.7.1",
     "nuxt-storage": "^1.2.2",
     "nuxt-vue-select": "^0.1.4",

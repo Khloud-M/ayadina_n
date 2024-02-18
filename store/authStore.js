@@ -9,31 +9,39 @@ export const useAuthStore = defineStore("auth", {
     isAuthenticated: false,
     name: "",
   }),
+  
   actions: {
-    async signIn({ email, password }) {
-      this.axios
-        .post("/sign-in", { log: email, password })
-        .then((res) => {
-          console.log(res);
-
-          if (res.data.key === "success") {
-            this.token = res.data.data.token;
-            this.isAuthenticated = true;
-            localStorage.setItem("token", res.data.data.token);
-            this.name = res.data.data.name;
-            this.user = res.data.data;
-            setTimeout(function () {
-              useRouter().push({ path: "/" });
-            }, 3000);
-          } else if (res.data.key === "needActive") {
-            useRouter().push({ path: "/login/otp" }),
-              (this.isAuthenticated = false);
+    async signIn({ email, phone, password ,  country_code }) {
+      try {
+          let loginData = {};
+  
+          if (email) {
+              loginData = { log: email, password ,  };
+          } else if (phone) {
+              loginData = { log: phone, password , country_code:  country_code };
           }
-        })
-        .catch((error) => {
+  
+          const res = await this.axios.post("/sign-in", loginData);
+  
+          console.log(res);
+  
+          if (res.data.key === "success") {
+              this.token = res.data.data.token;
+              this.isAuthenticated = true;
+              localStorage.setItem("token", res.data.data.token);
+              this.name = res.data.data.name;
+              this.user = res.data.data;
+              setTimeout(function () {
+                  useRouter().push({ path: "/" });
+              }, 3000);
+          } else if (res.data.key === "needActive") {
+              useRouter().push({ path: "/login/otp" });
+              this.isAuthenticated = false;
+          }
+      } catch (error) {
           console.log(error);
-        });
-    },
+      }
+  },
     async signUp({ name, email, phone, country_code, password }) {
       this.axios
         .post("/sign-up", { name, email, phone, country_code, password })
