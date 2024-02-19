@@ -88,8 +88,9 @@
               class="cursor-pointer"
               label="Show"
               icon="pi pi-external-link"
-              @click="visible = true"
+              @click="confirmSkillRemoval(skill.id)"
             >
+               <!-- @click="visible = true" -->
               <font-awesome-icon
                 :icon="['fas', 'trash-can']"
                 class="f-13 text-danger"
@@ -126,7 +127,7 @@
         type="button"
         class="btn btn-danger main_btn"
         label="Show"
-        @click="remove"
+        @click="removeSkill"
       >
         نعم
       </button>
@@ -175,6 +176,8 @@ export default {
       user: [],
       token: "",
       skills: [],
+      skillToRemoveId: null,
+      // visible: false,
     };
   },
 
@@ -223,22 +226,38 @@ export default {
       });
   },
 
-  // methods: {
+  methods: {
 
-  //   remove() {
-  //       this.visible2 = true
-  //       this.visible = false
-  //       const index = this.$store.getters['skills/skills'].findIndex((skill) => skill.id === this.id)
-  //       console.log(index)
-  //       console.log(this.$store.getters['skills/skills'].filter((skill) => skill.id === this.id))
-  //       this.$store.getters['skills/skills'].splice(index, 1);
-  //       setTimeout(function () {
-  //         //   this.$router.push('/profileOrders')
-  //           this.visible2 = false
-  //       console.log(this.$store.getters['skills/skills'])
+  confirmSkillRemoval(skillId) {
+      this.skillToRemoveId = skillId;
+      this.visible = true;
+    },
+  removeSkill() {
+      if (this.skillToRemoveId) {
+        console.log(this.skillToRemoveId)
+        // Make API request to remove the skill using this.skillToRemoveId
+        this.axios
+          .delete(`/delete-skill/${this.skillToRemoveId}`, {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            // Remove the skill from the skills array
+            this.skills = this.skills.filter((skill) => skill.id !== this.skillToRemoveId);
+          })
+          .catch((error) => {
+            console.error("Error removing skill:", error);
+          })
+          .finally(() => {
+            // Reset the skillToRemoveId and hide the confirmation dialog
+            this.skillToRemoveId = null;
+            this.visible = false;
+          });
+      }
+    },
 
-  //       }.bind(this), 3000)
-  //   }
-  // }
-};
+  }
+}
 </script>

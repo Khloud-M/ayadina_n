@@ -19,7 +19,7 @@
                 </NuxtLink>
                 <!--check for user -->
 
-                <ul class="d-flex align-items-center gap-20 project-nav "  v-if="isLoggedIn">
+                <ul class="d-flex align-items-center gap-20 project-nav "  v-if="isAuth">
                     <li>
                         <NuxtLink :to="localePath('/')" class="main_color"> {{ $t('home_title') }}</NuxtLink>
                     </li>
@@ -41,7 +41,8 @@
                     </li>
                 </ul>
                 <!-- check if not  -->
-                <ul class="d-flex align-items-center gap-20 project-nav" v-else>
+                <ul class="d-flex align-items-center gap-20 project-nav" v-else-if="!isAuth
+                ">
                     <li>
                         <NuxtLink :to="localePath('/')" class="main_color"> {{ $t('home_title') }}</NuxtLink>
                     </li>
@@ -56,7 +57,7 @@
             </div>
         </div>
     </header>
-
+<h1>{{ isAuth  }}</h1>
     <div class="container">
         <div class="s-space">
             <h1 class="text-danger">{{ $t("home_title") }}</h1>
@@ -151,6 +152,7 @@
 <script>
 import { useAuthStore } from '@/store/authStore';
 // import { mapGetters } from '@/store/authStore';
+
 export default {
     data() {
         return {
@@ -169,10 +171,16 @@ export default {
         }
     },
 
-
+computed:{
+    isAuth(){
+        return useAuthStore().isAuthenticated
+},},
     mounted() {
-        const token = localStorage.getItem('token');
-        this.isLoggedIn = token !== null && token !== '';
+        this.user = useAuthStore().user
+        console.log(this.user) 
+        this.isAuth = useAuthStore().isAuthenticated 
+        console.log(this.isAuth)
+       
     },
     // watch: {
     //     'useAuthStore().setUser()'(newValue) {
@@ -182,7 +190,7 @@ export default {
     // },
         methods: {
         logout() {
-            localStorage.removeItem("token"),
+            // localStorage.removeItem("token"),
                 // localStorage.removeItem('token')
                 alert('deleted')
             useRouter().push({ path: '/' })

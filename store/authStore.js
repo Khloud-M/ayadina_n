@@ -90,9 +90,22 @@ export const useAuthStore = defineStore("auth", {
       // Directly update the user state in the store
       this.user = user;
     },
-    logOut() {
-      this.user = null;
-    },
+    async logOut() {
+      try {
+        const res = await this.axios.delete("/sign-out", loginData);
+
+        console.log(res);
+
+        if (res.data.key === "success") {
+          this.user = null
+          this.isAuthenticated = false
+        } else if (res.data.key === "needActive") {
+           console.log(res)
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    }
   },
   persist: {
     storage: persistedState.localStorage,

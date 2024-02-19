@@ -2,7 +2,11 @@
   <ui-main-title> تعديل مهارة </ui-main-title>
   <div class="row justify-content-center">
     <div class="col-md-10">
-      <form @submit.prevent="addSkill" enctype="multipart/form-data">
+      <form
+        @submit.prevent="addSkill"
+        enctype="multipart/form-data"
+        ref="editSkill"
+      >
         <inputs-form-control id="nameAr" type="text" v-model="nameAr">
           اسم المهارة باللغة العربية
         </inputs-form-control>
@@ -10,12 +14,33 @@
           اسم المهارة باللغة الانجليزية
         </inputs-form-control>
 
-        <inputs-form-control id="mainSection" type="text" v-model="category">
-          القسم الرئيسيي</inputs-form-control
-        >
-        <inputs-form-control id="subSection" v-model="subCategory">
-          القسم الفرعي
-        </inputs-form-control>
+        <div class="form-group">
+            <label class="form-label">
+              <span class="m-end-5">   القسم الرئيسيي</span>
+              <span class="text-danger">*</span>
+            </label>
+            <Dropdown
+              v-model="selectedCategory"
+              :options="categories"
+              optionLabel="name"
+              class="w-100 form-control d-flex justify-content-between"
+              @change="selectedsubCategory"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <span class="m-end-5">   القسم الفرعي </span>
+              <span class="text-danger">*</span>
+            </label>
+            <Dropdown
+              v-model="selectedsubCategory"
+              :options="subCategories"
+              optionLabel="name"
+              class="w-100 form-control d-flex justify-content-between"
+              @change="selectRegions"
+            />
+          </div>
+     
         <inputs-form-control textarea id="descripe" v-model="descriptionAr">
           وصف المهارة
         </inputs-form-control>
@@ -51,31 +76,21 @@
             class="w-100"
           />
         </div>
-        <div class="d-flex gap-20 mb-3">
-          <!-- <inputs-imgInput
-            v-for="imSrc in images.image"
-            :key="imSrc"
-            :v-model="imSrc"
-            :img="imSrc"
-            :edit="true"
-            :removeSrcMethod="() => removeSrc(index)"
-          ></inputs-imgInput> -->
-          <!-- <InputsImgInput
-          v-for="imSrc in images.image"
-          :key="imSrc"
-            :modelValue="imSrc"
-            
+
+        <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+          <InputsImgInput
+            v-for="(img, index) in imgs"
+            :key="img.id"
+            :index="index"
+            :modelValue="img.image"
+            id="profileImg"
             @update:modelValue="updateImageUrl"
             @removeImage="removeImage"
             @change="handleImageUpload"
             name="image"
-          /> -->
-          <img
-          v-for="imSrc in images.image"
-          :key="imSrc"
-          :src="imSrc"
           />
         </div>
+
         <div class="flex-center">
           <baseButton class="main_btn lg" @click="visible = true" label="Show">
             تعديل مهارة</baseButton
@@ -128,11 +143,9 @@ export default {
       subSection: "",
       descripe: "",
       selectedCities: null,
-      selectedRegions: null ,
-        images:[],
-      Governorates: "",
+      selectedRegions: null,
+      images: [],
       imgs: [],
-      Governorate: "",
       cities: [],
       regions: [],
       selectedSkill: "",
@@ -144,13 +157,17 @@ export default {
       regionsName: [],
       lang: useNuxtApp().$i18n.locale,
       selectedCityIds: [],
+      selectedCategory: null ,
+      selectedsubCategory: null ,
+      subCategories: [],
+      categories: [],
       nameAr: "",
       nameEn: "",
       descriptionAr: "",
       descriptionEn: "",
-      category: "",
-      subCategory: "",
+   
       selectedCityIds: null,
+      img2: "../assets/imgs/logo1.png",
     };
   },
 
@@ -158,35 +175,65 @@ export default {
     updateImageUrl(newImageUrl) {
       this.imageUrl = newImageUrl;
     },
-    removeImage() {
+    removeImage(index) {
       this.imageUrl = "";
+      this.imgs.splice(index, 1);
     },
-    // removeSrc(index) {
-    //   // Remove the image source at the specified index
-    //   this.selectedSkill.images.splice(index, 1);
-    //   console.log(this.selectedSkill.images);
-    // },
+    selectSubCategory() {
+      this.axios
+        .get(`sub-categories/${this.selectedCity.id}`)
+        .then((response) => {
+          this.subCategories = response.data.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     selectRegions() {
-      this.selectedRegions = null,
-        this.selectedCityIds = this.selectedCities.map((city) => city.id);
+      (this.selectedRegions = null),
+        (this.selectedCityIds = this.selectedCities.map((city) => city.id));
+      this.regions = [];
       for (const cityId of this.selectedCityIds) {
         this.axios
           .get(`regions/${cityId}`)
           .then((response) => {
-          
             const regionsForCity = response.data.data;
 
             // Push the regions for the current city to the allRegions array
             this.regions.push(...regionsForCity);
           })
           .catch((error) => {
-            console.error(`Error fetching regions for city ID ${cityId}:`, error);F
+            console.error(
+              `Error fetching regions for city ID ${cityId}:`,
+              error
+            );
+            F;
           });
       }
       // Make the API request to fetch regions based on selected cities
     },
+    async editSkills() {
+      this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
+      this.imgsId = this.imgs.map((img) => img.id);
+      console.log(this.selectRegions , this.imgsId)
+      const formData = new FormData(this.$refs.form);
+
+      // Append other form data fields
+      formData.append("title[ar]", this.nameAr);
+      formData.append("title[en]", this.nameEn);
+      formData.append("description[ar]", this.descriptionAr);
+      formData.append("description[en]", this.descriptionEn);
+      formData.append("category_id", this.selectedsubCategory.id);
+      formData.append("sub_category_id", this.selectedsubCategory.id);
+      formData.append('city_ids[]' ,  this.selectedRegionsIds)
+      formData.append('region_ids[]' , this.selectedRegionsIds)
+      formData.append('images' , this.selectedRegions.id )
+
+
+
+    },
   },
-  
+
   mounted() {
     this.axios
       .get("/cities")
@@ -212,39 +259,44 @@ export default {
         this.nameEn = this.selectedSkill.title.en;
         this.descriptionAr = this.selectedSkill.description.ar;
         this.descriptionEn = this.selectedSkill.description.en;
-        this.category = this.selectedSkill.category.name;
-        this.subCategory = this.selectedSkill.sub_category.name;
-        // this.selectedRegions = this.selectedSkill.regions;
+        this.selectedCategory = this.selectedSkill.category;
+        this.selectedsubCategory = this.selectedSkill.sub_category;
+        this.selectedRegions = this.selectedSkill.regions;
         this.selectedCities = this.selectedSkill.cities;
-        this.images = this.selectedSkill.images
+        this.imgs = this.selectedSkill.images;
+       
+        this.selectedCityIds = this.selectedCities.map((city) => city.id);
+        this.regions = [];
+        for (const cityId of this.selectedCityIds) {
+          this.axios
+            .get(`regions/${cityId}`)
+            .then((response) => {
+              const regionsForCity = response.data.data;
 
-        console.log(response.data.data);
-        console.log(this.selectedSkill.regions);
-        // console.log(this.nameAr)
-           //  this.nameAr = this.selectedSkill.title.ar
-    this.selectedCityIds = this.selectedCities.map((city) => city.id);
-      for (const cityId of this.selectedCityIds) {
-        this.axios
-          .get(`regions/${cityId}`)
-          .then((response) => {
-          
-            const regionsForCity = response.data.data;
-
-            // Push the regions for the current city to the allRegions array
-            this.regions.push(...regionsForCity);
-          })
-          .catch((error) => {
-            console.error(`Error fetching regions for city ID ${cityId}:`, error);F
-          });
-      }
+              // Push the regions for the current city to the allRegions array
+              this.regions.push(...regionsForCity);
+            })
+            .catch((error) => {
+              console.error(
+                `Error fetching regions for city ID ${cityId}:`,
+                error
+              );
+              F;
+            });
+        }
       })
       .catch(function (error) {
         console.log(error);
       });
-
- 
-  }
-
+      this.axios
+        .get('/categories')
+        .then((response) => {
+          this.categories = response.data.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  },
 };
 </script>
 <style scoped>

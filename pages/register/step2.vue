@@ -130,11 +130,6 @@ export default {
     completeForm() {
       const formData = new FormData(this.$refs.form);
 
-      // Append the image file to the formData
-      // if (this.userImg) {
-      //   formData.append("image", this.userImg);
-      // }
-
       // Append other form data fields
       formData.append("city_id", this.selectedCity.id);
       formData.append("region_id", this.selectedRegion.id);

@@ -55,6 +55,7 @@ export default defineNuxtConfig({
       "@fortawesome/free-solid-svg-icons",
       "@fortawesome/free-regular-svg-icons",
       "@fortawesome/free-brands-svg-icons",
+      'vue-toastification'
     ],
   },
   css: [
@@ -65,5 +66,8 @@ export default defineNuxtConfig({
   primevue: {
     cssLayerOrder: "reset,primevue",
   },
+// plugins: [
+//   { src: "./plugins/vue3-toastify.ts", mode: 'client' },
+// ],
 });
 

@@ -1,249 +1,320 @@
 <template>
-    <ui-main-title> إضافة مهارة </ui-main-title>
-    <ul>
-        <li v-for="n in name" :key="n.id">
-            <p> v-if English: {{ n.en }}</p>
-            <p>Arabic: {{ n.ar }}</p>
-        </li>
-    </ul>
-    <div class="row justify-content-center">
-        <div class="col-md-10 ">
-            <form @submit.prevent="addSkill">
-                <inputs-form-control id="nameAr" type="text" v-model="arName"> اسم المهارة باللغة العربية
-                </inputs-form-control>
-                <inputs-form-control id="nameEn" type="text" v-model="enName"> اسم المهارة باللغة الانجليزية
-                </inputs-form-control>
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="m-end-5"> القسم الرئيسي </span>
-                        <span class="text-danger">*</span>
-                    </label>
-                    <InputsSelect v-model="selectedCategory" :options="categories" optionLabel="name"
-                        @change="selectSubCategory" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="m-end-5"> القسم الفرعي </span>
-                        <span class="text-danger">*</span>
-                    </label>
-                    <InputsSelect v-model="selectedSubCategory" :options="subCategories" optionLabel="name.ar"
-                        v-if="arLang" />
-                        <InputsSelect v-model="selectedSubCategory" :options="subCategories" optionLabel="name.en"
-                        v-else />
-                  
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="m-end-5">المدينة</span>
+  <ui-main-title> إضافة مهارة </ui-main-title>
+  <ul>
+    <li v-for="n in name" :key="n.id">
+      <p>v-if English: {{ n.en }}</p>
+      <p>Arabic: {{ n.ar }}</p>
+    </li>
+  </ul>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form
+        @submit.prevent="addSkill"
+        enctype="multipart/form-data"
+        ref="addSkill"
+      >
+        <inputs-form-control id="nameAr" type="text" v-model="nameAr">
+          اسم المهارة باللغة العربية
+        </inputs-form-control>
+        <inputs-form-control id="nameEn" type="text" v-model="nameEn">
+          اسم المهارة باللغة الانجليزية
+        </inputs-form-control>
 
-                        <span class="text-danger">*</span>
-                    </label>
-                    <InputsMultiSelect v-model="selectedCity" :options="cities" optionLabel="name" @change="selectRegions" />
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <span class="m-end-5">المناطق</span>
-                        <span class="text-danger">*</span>
-                    </label>
-
-                    <InputsMultiSelect v-model="selectRegion" :options="regions" optionLabel="name" />
-                </div>
-                <inputs-form-control textarea id="descripe" v-model.trim="descripe"> وصف المهارة
-                    بالعربي</inputs-form-control>
-                <inputs-form-control textarea id="descripe" v-model.trim="enDescripe"> وصف المهارة بالانجليزي
-                </inputs-form-control>
-
-                <div>
-                    <label class="form-label">
-                        <span> صور اعمال سابقة </span>
-                        <span class="text-danger">*</span>
-                    </label>
-                    <div class="d-flex gap-20 mb-3">
-                        <inputs-imgInput :id="img1" v-model="imgs"></inputs-imgInput>
-                        <inputs-imgInput :id="img2" v-model="imgs"></inputs-imgInput>
-                        <inputs-imgInput :id="img3" v-model="imgs"></inputs-imgInput>
-                        <inputs-imgInput :id="img4" v-model="imgs"></inputs-imgInput>
-                    </div>
-                </div>
-                <div class="flex-center">
-                    <baseButton class="main_btn lg" @click="visible = true" label="Show"> إضافة مهارة</baseButton>
-                </div>
-            </form>
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5"> القسم الرئيسيي</span>
+            <span class="text-danger">*</span>
+          </label>
+          <Dropdown
+            v-model="selectedCategory"
+            :options="categories"
+            optionLabel="name"
+            class="w-100 form-control d-flex justify-content-between"
+            @change="selectSubCategory"
+          />
         </div>
-    </div>
-    <Dialog v-model:visible="visible" modal :style="{ width: '50rem' }"
-        :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-        <font-awesome-icon icon="fa-regular fa-circle-check" class="modal-exclam-mark mb-3 main_color" />
-        <h6 class="text-center mb-3">تم إضافة المهارة بنجاح</h6>
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5"> القسم الفرعي </span>
+            <span class="text-danger">*</span>
+          </label>
+          <Dropdown
+            v-model="selectedsubCategory"
+            :options="subCategories"
+            optionLabel="name"
+            class="w-100 form-control d-flex justify-content-between"
+            @change="selectRegions"
+          />
+        </div>
+
+        <inputs-form-control textarea id="descripe" v-model="descriptionAr">
+          وصف المهارة
+        </inputs-form-control>
+        <inputs-form-control textarea id="descripe" v-model="descriptionEn">
+          وصف المهارة
+        </inputs-form-control>
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5">المدينة</span>
+
+            <span class="text-danger">*</span>
+          </label>
+          <MultiSelect
+            v-model="selectedCities"
+            :options="cities"
+            optionLabel="name"
+            :maxSelectedLabels="8"
+            @change="selectRegions"
+            class="w-100"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5">المناطق</span>
+            <span class="text-danger">*</span>
+          </label>
+
+          <MultiSelect
+            v-model="selectedRegions"
+            :options="regions"
+            optionLabel="name"
+            :maxSelectedLabels="8"
+            class="w-100"
+          />
+        </div>
+
+        <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+          <InputsImgInput
+          id="profileImg"
+            @update:modelValue="updateImageUrl('img', $event)"
+            @removeImage="removeImage('img')"
+            @change="handleImageUpload('img')"
+            name="img"
+          />
+          <InputsImgInput
+          :modelValue="img2"
+            id="profileImg2"
+            @update:modelValue="updateImageUrl('img2', $event)"
+            @removeImage="removeImage('img2')"
+            @change="handleImageUpload('img2')"
+            name="img2"
+          />
+          <InputsImgInput
+            :modelValue="img3"
+            id="profileImg3"
+            @update:modelValue="updateImageUrl('img3', $event)"
+            @removeImage="removeImage('img3')"
+            @change="handleImageUpload('img3')"
+            name="img3"
+          />
+          <InputsImgInput
+            :modelValue="img4"
+            id="profileImg4"
+            @update:modelValue="updateImageUrl('img4', $event)"
+            @removeImage="removeImage('img4')"
+            @change="handleImageUpload('img4')"
+            name="img4"
+          />
+          <InputsImgInput
+           :modelValue="img5"
+            id="profileImg5"
+            @update:modelValue="updateImageUrl('img5', $event)"
+            @removeImage="removeImage('img5')"
+            @change="handleImageUpload('img5')"
+            name="img5"
+          />
+        </div>
+
         <div class="flex-center">
-            <ui-base-button mode="main_btn" @click="visible = false" link to="/profile"> رجوع </ui-base-button>
+          <baseButton class="main_btn lg" @click="visible = true" label="Show">
+            تعديل مهارة</baseButton
+          >
         </div>
-    </Dialog>
+      </form>
+      <toast />
+    </div>
+  </div>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :style="{ width: '50rem' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <font-awesome-icon
+      icon="fa-regular fa-circle-check"
+      class="modal-exclam-mark mb-3 main_color"
+    />
+    <h6 class="text-center mb-3">تم إضافة المهارة بنجاح</h6>
+    <div class="flex-center">
+      <ui-base-button
+        mode="main_btn"
+        @click="visible = false"
+        link
+        to="/profile"
+      >
+        رجوع
+      </ui-base-button>
+    </div>
+  </Dialog>
 </template>
 <script>
-import multiSelect from '../../components/inputs/multiSelect.vue';
+import multiSelect from "../../components/inputs/multiSelect.vue";
 
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
+import { useAuthStore } from "~/store/authStore";
 export default {
-    components: {
-        multiSelect,
-        Dialog,
+  components: {
+    multiSelect,
+    Dialog,
+  },
+  data() {
+    return {
+      axios: useNuxtApp().$axios,
+      visible: false,
+      arName: "",
+      enName: "",
+      mainSection: "",
+      subSection: "",
+      descripe: "",
+      selectedCities: null,
+      selectedRegions: null,
+      images: [],
+      imgs: [],
+      cities: [],
+      regions: [],
+      selectedSkill: "",
+      filePreview: "",
+      fileName: "",
+      selectedSkill: "",
+      formdata: "",
+      cityName: null,
+      regionsName: [],
+      lang: useNuxtApp().$i18n.locale,
+      selectedCityIds: [],
+      selectedCategory: null,
+      selectedsubCategory: null,
+      subCategories: [],
+      categories: [],
+      nameAr: "",
+      nameEn: "",
+      descriptionAr: "",
+      descriptionEn: "",
+      token: "",
+      selectedCityIds: null,
+      img: "",
+      img2: "",
+      img3: "",
+      img4: "",
+      img5: "",
+    };
+  },
+  mounted() {
+    this.token = useAuthStore().user.token;
+
+    this.axios
+      .get("/cities")
+      .then((response) => {
+        this.cities = response.data.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      }),
+      this.axios
+        .get("/categories")
+        .then((response) => {
+          this.categories = response.data.data.categories;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  },
+  methods: {
+    updateImageUrl(imgName, newImageUrl) {
+      this[imgName] = newImageUrl;
     },
-    data() {
-        return {
-            visible: false,
-            arName: '',
-            enName: '',
-            mainSection: '',
-            subSection: '',
-            descripe: '',
-            selectedCity: null,
-            selectRegion: null,
-            selectedCategory: null,
-            selectedSubCategory: null,
-            imgs: [],
-            // Governorate: '',
-            cities: [],
-            Governorates: [],
-            axios: useNuxtApp().$axios,
-            categories: [],
-            subCategories: [],
-            enDescripe: '',
-            name: '',
-            nameAr: [],
-            nameEn: '',
-            items: '',
-            arLang: useNuxtApp().$i18n.locale.value === 'ar' 
-        }
+    removeImage(imgName) {
+      // Handle removing the image for the specified imgName
+      this[imgName] = "";
     },
-    mounted() {
-
-        this.axios.get('/cities')
-            .then((response) => {
-                this.cities = response.data.data
-            })
-            .catch(function (error) {
-                console.log(error);
-            }),
-
-            this.axios.get('/categories')
-                .then((response) => {
-                    this.categories = response.data.data.categories
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+    removeImage(imgName) {
+      // Handle removing the image for the specified imgName
+      this[imgName] = "";
     },
-    methods: {
-        selectRegions() {
-    //     
-            this.axios.get(`regions/${this.selectedCity.id}`)
-                .then((response) => {
-                    this.regions = response.data.data
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+    selectSubCategory() {
+      this.axios
+        .get(`sub-categories/${this.selectedCategory.id}`)
+        .then((response) => {
+          this.subCategories = response.data.data;
+          console.log(this.subCategories)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    selectRegions() {
+      (this.selectedRegions = null),
+        (this.selectedCityIds = this.selectedCities.map((city) => city.id));
+      this.regions = [];
+      for (const cityId of this.selectedCityIds) {
+        this.axios
+          .get(`regions/${cityId}`)
+          .then((response) => {
+            const regionsForCity = response.data.data;
 
-        },
-        selectSubCategory() {
-            this.axios.get(`sub-categories/${this.selectedCategory.id}`)
-                .then((response) => {
-                    this.subCategories = response.data.data
-                    // this.name = this.subCategories.map(item => item.name);
+            // Push the regions for the current city to the allRegions array
+            this.regions.push(...regionsForCity);
+          })
+          .catch((error) => {
+            console.error(
+              `Error fetching regions for city ID ${cityId}:`,
+              error
+            );
+            F;
+          });
+      }
+      // Make the API request to fetch regions based on selected cities
+    },
+    async addSkill() {
+      this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
+      this.imgsId = this.imgs.map((img) => img.id);
+      console.log(this.selectRegions, this.imgsId);
+      const formData = new FormData(this.$refs.addSkill);
 
+      // Append other form data fields
+      formData.append("title[ar]", this.nameAr);
+      formData.append("title[en]", this.nameEn);
+      formData.append("description[ar]", this.descriptionAr);
+      formData.append("description[en]", this.descriptionEn);
+      formData.append("category_id", this.selectedCategory.id);
+      formData.append("sub_category_id", this.selectedsubCategory.id);
+      formData.append("city_ids[]", this.selectedRegionsIds);
+      formData.append("region_ids[]", this.selectedRegionsIds);
+      // formData.append("images", this.img.id);
 
-
-                    // // if (useNuxtApp().$i18n.locale.value === 'en') {
-                    // this.nameAr = this.name.map(i => i.ar)
-                    // console.log(this.nameAr);
-
-
-
-                    console.log(this.name);
-                    // } else {
-                    //     this.nameEn = this.name.map(i => i.ar)
-                    //     console.log(this.nameAr);
-                    // }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-
-        },
-        // name(){
-        //    return useNuxtApp().$i18n.locale.value
-
-        // }
-        // addSkill() {
-
-
-        //     this.formData = {
-        //         'title[ar]': this.arName,
-        //         'title[en]': this.enName,
-        //         city_ids[]: this.selectedCity.id,
-        //         region_ids[]: this.selectRegion.id,
-        //         category_id: this.selectedCategory.id,
-        //         sub_category_id: this.selectedSubCategory.id,
-        //         description[ar]: this.description[ar],
-        //         description[en]: this.description[en],
-
-
-
-        //     }
-
-        //     this.axios.post('/sign-up', this.formData)
-        //         .then((response) => {
-        //             if (response.data.key === 'success') {
-        //                 console.log(response.data)
-        //                 nuxtStorage.localStorage.setData('userId', this.name)
-        //                 this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
-        //                 setTimeout(function () {
-        //                     useRouter().push({ path: '/register/otp' });
-        //                 }, 3000)
-        //             } else {
-        //                 this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
-
-        //             }
-        //         })
-        //         .catch((err) => {
-        //             setTimeout(function () {
-        //                 useRouter().push({ path: '/' });
-        //             }, 3000)
-        //             this.$toast.add({ detail: `${err}`, life: 3000 });
-        //         })
-        // }
-    }
-    //     methods: {
-
-    //         addSkill() {
-    //             this.Governorate = this.selectedGovernorates.forEach(Governorate => {
-    //                let obj = Object.values(Governorate).toString()
-    //                console.log(obj)
-    //                this.Governorate = obj
-    //                console.log(this.Governorate)
-
-    //             });
-    //             this.$store.dispatch('skills/newSkill', {
-    //                 title: this.arName,
-    //                 mainSection: this.mainSection,
-    //                 subSection: this.subSection,
-    //                 descripe: this.descripe,
-    //                 cities: this.selectedCities,
-    //                 Governorates: this.Governorate,
-    //                 // Governorates: (Governorates) => Governorates.flat().map(({name})=> name),
-    //                 imgs: this.imgs
-    //             })
-    //             console.log(this.$store.getters['skills/skills'])
-    //         }
-    //     }
-}
-
+      await this.axios
+        .post(
+          "/create-skill",
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          },
+          formData
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 <style scoped>
 .base-image-input {
-    width: 130px;
-    height: 130px;
-    margin: 0 !important;
+  width: 130px;
+  height: 130px;
+  margin: 0 !important;
 }
 </style>

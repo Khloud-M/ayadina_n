@@ -23,7 +23,8 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used").default> &
   InjectionType<typeof import("../../node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/plugin").default> &
   InjectionType<typeof import("../../plugins/axios").default> &
-  InjectionType<typeof import("../../plugins/fontawesome").default>
+  InjectionType<typeof import("../../plugins/fontawesome").default> &
+  InjectionType<typeof import("../../plugins/vue-toastificaton").default>
 
 declare module '#app' {
   interface NuxtApp extends NuxtAppInjections { }
