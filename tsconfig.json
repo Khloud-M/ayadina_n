@@ -5,7 +5,8 @@
   "compilerOptions": {
     "types" : [
       "@nuxt/types",
-       "@nuxtjs/axios"
+       "@nuxtjs/axios",
+       "@pinia/nuxt"
             ]
   }
 }

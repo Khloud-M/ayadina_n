@@ -193,6 +193,7 @@ export default {
       .then((response) => {
         if ((response.data.msg = "success")) {
           this.user = response.data.data;
+          console.log(response)
         } else {
           this.$toast.add({
             severity: "info",
@@ -220,6 +221,7 @@ export default {
       .then((response) => {
         console.log(response.data.data.data);
         this.skills = response.data.data.data;
+        console.log(response.data.data)
       })
       .catch(function (error) {
         console.log(error);

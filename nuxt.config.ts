@@ -1,20 +1,23 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // import store from './store/index.js'
 export default defineNuxtConfig({
+  // experimental: {
+  //   renderJsonPayloads: false
+  // },
   devtools: { enabled: true },
   modules: [
     "nuxt-primevue",
     "@nuxtjs/i18n",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
-    '@pinia/nuxt',
   ],
   imports: {
     dirs: ['./stores'],
   },
-  // pinia: {
-  //   autoImports: ['defineStore', 'acceptHMRUpdate'],
-  // },
+ 
+  pinia: {
+    storesDirs: ['./stores/**', './custom-folder/stores/**'],
+  },
   app: {
     head: {
       title: "Ayadina",

@@ -47,9 +47,11 @@
     "popper.js": "^1.16.1",
     "primevue": "^3.46.0",
     "vue-i18n": "^8.28.2",
-    "vue-toastification": "^1.7.14",
     "vue3-otp-input": "^0.4.1",
     "vue3-verification-code-input": "^0.1.0",
     "vuex": "^4.0.2"
+  },
+  "overrides": {
+    "vue": "latest"
   }
 }

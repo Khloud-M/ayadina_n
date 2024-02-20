@@ -1,15 +1,20 @@
 // authStore.js
 import { defineStore } from "pinia";
+// import persistedState from 'pinia/plugin-persisted-state';
 
 export const useAuthStore = defineStore("auth", {
-  state: () => ({
-    token: null,
-    user: null,
-    axios: useNuxtApp().$axios,
-    isAuthenticated: false,
-    name: "",
-  }),
+
   
+  state: () => {
+    return {
+      // all these properties will have their type inferred automatically
+      token: null,
+      user: null,
+      axios: useNuxtApp().$axios,
+      isAuthenticated: false,
+      name: "",
+    }
+  },
   actions: {
     async signIn({ email, phone, password ,  country_code }) {
       try {
@@ -28,9 +33,9 @@ export const useAuthStore = defineStore("auth", {
           if (res.data.key === "success") {
               this.token = res.data.data.token;
               this.isAuthenticated = true;
-              localStorage.setItem("token", res.data.data.token);
-              this.name = res.data.data.name;
+            
               this.user = res.data.data;
+              
               setTimeout(function () {
                   useRouter().push({ path: "/" });
               }, 3000);
@@ -47,14 +52,14 @@ export const useAuthStore = defineStore("auth", {
         .post("/sign-up", { name, email, phone, country_code, password })
         .then((response) => {
           if (response.data.key === "success") {
-            console.log(response.data);
+          
             console.log(response);
-            // this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
+          
             setTimeout(function () {
               useRouter().push({ path: "/register/otp" });
             }, 3000);
           } else {
-            // this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
+            // this.$toast.add({ detail: ${response.data.msg}, life: 3000 });
             console.log(response)
           }
         })
@@ -62,7 +67,7 @@ export const useAuthStore = defineStore("auth", {
           setTimeout(function () {
             useRouter().push({ path: "/" });
           }, 3000);
-          this.$toast.add({ detail: `${err}`, life: 3000 });
+          
         });
     },
     async otp({ code, email }) {
@@ -70,13 +75,12 @@ export const useAuthStore = defineStore("auth", {
         .post("/activate", { code, email })
         .then((response) => {
           if (response.data.key === "success") {
-            localStorage.setItem("token", response.data.data.token);
-           
+            this.isAuthenticated = true;
+            this.user = response.data.data
             setTimeout(function () {
               useRouter().push({ path: "/register/step2" });
             }, 3000);
           } else {
-            // this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
             console.log(response)
           }
         })
@@ -84,22 +88,22 @@ export const useAuthStore = defineStore("auth", {
           console.log(error);
         });
     },
-    // profile
-    // signOut
+    // // profile
+    // // signOut
     setUser(user) {
       // Directly update the user state in the store
       this.user = user;
     },
     async logOut() {
       try {
-        const res = await this.axios.delete("/sign-out", loginData);
+        const res = await this.axios.delete("/sign-out");
 
         console.log(res);
-
-        if (res.data.key === "success") {
+        if (res.data.key === "success" || res.data.key === "unauthenticated" || res.data.key === "blocked" ) {
           this.user = null
           this.isAuthenticated = false
-        } else if (res.data.key === "needActive") {
+          useRouter().push({path: '/'})
+        } else {
            console.log(res)
         }
     } catch (error) {
@@ -108,6 +112,9 @@ export const useAuthStore = defineStore("auth", {
     }
   },
   persist: {
-    storage: persistedState.localStorage,
+    storage: persistedState.cookiesWithOptions({
+      sameSite: "strict",
+    }),
   },
 });
+  

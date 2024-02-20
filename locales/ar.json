@@ -36,7 +36,7 @@
     "edit_phone":"تغيير رقم الجوال ",
     "edit_email":"تغيير البريد الالكتروني ",
     "edit_password":"تغييير كلمة المرور ",
-
+    "logout":"تسجيل الخروج ",
     "deletAccount":"حذف الحساب " ,
     "Activate_notifications":"تفعيل الاشعارات",
     "save_edits":"حفظ التعديلات" ,
@@ -47,12 +47,29 @@
     "New_email":"البريد الالكتروني الجديد",
     "Current_Password":"كلمة المرور الحالية",
     "New_Password":"كلمة المرور الجديدة",
-    "Confirm_current_password":"تأكيد كلمة المرور الحالية",
+    "Confirm_current_password":"تأكيد كلمة المرور الجديدة",
     "save":"حفظ" ,
-    "Do_you_really_want_to_delete_the_account?":" هل بالفعل تريد حذف الحساب " ,
+    "Do_you_really_want_to_delete_the_account":" هل بالفعل تريد حذف الحساب " ,
     "The_account_has_been_successfully_deleted" :"تم حذف الحساب  بنجاح ",
-    "order_number":"رقم الطلب "
+    "order_number":"رقم الطلب " ,
+    "The_password_has_been_changed_successfully":"          تم تغير كلمة المرور بنجاح    " ,
+    "Enter_the_verification_code_sent_to_your_mobile_phone" :"ادخل كود التحقق المرسل الي جوالك " ,
+    "The_change_was_made_successfully":"            تم التغيير بنجاح     " , 
+    "myorder" :"طلباتي" ,
+    "Order_details":"تفاصيل الطلب" , 
+    "order_number":"رقم الطلب",
+    "Main_section":"القسم الرئيسي" ,
+    "Subsection" :"القسم الفرعي " ,
+    "Description_of_the_request":"  وصف الطلب   " , 
+    "Do_you_really_want_to_delete_the_order":" هل بالفعل تريد حذف الطلب "  ,
+    "yes" : "نعم" , 
+    "no":"لا" ,
+    "nameofOrder" :"اسم الطلب " ,
+    "The_request_has_been_successfully_deleted" :" تم حذف الطلب بنجاح " , 
+    "Back_to_order":"رجوع للطلب "
 
+
+    
 
 
     

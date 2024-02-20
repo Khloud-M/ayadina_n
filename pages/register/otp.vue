@@ -72,38 +72,8 @@ export default {
                 console.error('Login error:', error);
             }
         },
-    // activation() {
-    //   const fd = new FormData();
 
-    //   fd.append("code", this.code);
-    //   fd.append("email", this.userMail);
-
-    //   this.formData = {
-    //     code: this.code,
-    //     email: this.userMail,
-    //   };
-    //   this.axios
-    //     .post("/activate", fd)
-    //     .then((response) => {
-    //         if(response.data.key === "success"){
-    //             localStorage.setItem("token", response.data.data.token);
-    //             useAuthStore().setUser(response.data.data)
-    //             console.log(response.data)
-    //             this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
-                
-    //             setTimeout(function () {
-    //                 useRouter().push({path: '/register/step2'})
-    //             }, 3000)
-        
-    //         }else{
-    //             this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
-    //         }
-    
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
+  
   },
 };
 </script>

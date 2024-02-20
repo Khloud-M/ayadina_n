@@ -149,11 +149,15 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
-          useAuthStore().updateUser(response.data.data);
-
+          if (response.data.key == "success") {
           this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
-        });
+          }else{
+            this.$toast.add({ detail: `${response.data.msg}`, life: 3000 });
+          }
+        })
+        .catch((error) =>{
+          this.$toast.add({ detail: `${error}`, life: 3000 });
+        } )
     },
   },
 };

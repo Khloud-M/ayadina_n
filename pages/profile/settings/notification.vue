@@ -1,5 +1,6 @@
 <template>
-    <ui-base-container>
+    <header-component></header-component>
+    <base-container>
         <ui-breadCrumb :to="localePath('/profile/settings')">
             <template v-slot:mainPage>{{ $t("Settings") }}</template>
             <template v-slot:currentPage> {{ $t("Notification_settings") }} </template>
@@ -7,50 +8,79 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <base-card class="p-5">
-                    <form @submit.prevent="updateNotifyStatus">
+                    <form>
                         <div class="bg-light p-3 flex-between rounded-3 w-75 m-auto shadow-sm">
                             <h5> {{ $t("Activate_notifications") }}</h5>
-                            <InputSwitch v-model="checked" @input="updateNotifyStatus" />
+                            <InputSwitch v-model="isNotify" @input="updateNotifyStatus" />
                         </div>
                     </form>
 
                 </base-card>
             </div>
         </div>
-    </ui-base-container>
-
+    </base-container>
+    <footer-component></footer-component>
 </template>
 <script>
 import { useAuthStore } from '@/store/authStore'
+
 export default {
     data() {
         return {
             localePath: useLocalePath(),
             axios: useNuxtApp().$axios,
-            checked: false,
+            toast: useToast(),
             token: '',
-            formData: ''
+            formData: '',
+            isNotify: null
         }
     },
-    methods: { 
-        updateNotifyStatus() {
-            this.token = useAuthStore().token
-            this.formData = {
-                notify: this.checked,
+    methods: {
 
+        async updateNotifyStatus() {
+            // alert(this.token);
+            const config = {
+                headers: { Authorization: `Bearer ${this.token}` }
             }
-            this.axios.patch('/switch-notify', this.formData , {
-                headers: {
-                    Authorization: `Bearer ${this.token}`,
+            await this.axios.patch('switch-notify', '', config).then((res) => {
+                let msg = res.data.msg
+                if (res.data.key === 'success') {
+                    alert(msg)
+
+                    // this.toast.success(msg)
+                    // this.isNotify = useAuthStore().user.is_notify
+                } else {
+                    // this.toast.error(msg)
+                    alert(msg)
                 }
-            }).then((res) => {
-                console.log(res)
             }).catch((error) => {
                 console.log(error)
             })
+        },
+        async getProfile() {
+            try {
+                const config = {
+                    headers: { Authorization: `Bearer ${this.token}` }
+                };
+                await this.axios.get('profile', config).then((res) => {
+                    this.isNotify=res.data.data.is_notify;
+                    console.log(res.data.data.is_notify)
+
+                })
+            } catch (error) {
+                console.log(error);
+            }
         }
 
-    }
+    },
+    mounted() {
+        this.token = useAuthStore().user.token
+        console.log(this.token)
+        this.getProfile()
+
+    },
+
+
 
 }
 </script>

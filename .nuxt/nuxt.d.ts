@@ -3,7 +3,6 @@
 /// <reference types="@nuxtjs/i18n" />
 /// <reference types="@pinia/nuxt" />
 /// <reference types="@pinia-plugin-persistedstate/nuxt" />
-/// <reference types="@pinia/nuxt" />
 /// <reference types="@nuxt/devtools" />
 /// <reference types="@nuxt/telemetry" />
 /// <reference types="nuxt" />

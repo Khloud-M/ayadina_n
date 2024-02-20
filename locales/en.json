@@ -1,4 +1,3 @@
-
 {
     "home_title": "Home",
     "welcome": "welcome-en",
@@ -48,9 +47,33 @@
     "New_email" :"New email",
     "Current_Password":"Current Password",
     "New_Password":" New Password",
-    "Confirm_current_password":"Confirm current password ",
+    "Confirm_current_password":"Confirm new password ",
     "save":"save",
     "Do_you_really_want_to_delete_the_account" :"Do you really want to delete the account?",
     "The_account_has_been_successfully_deleted" :"The account has been successfully deleted",
-    "order_number":"order number"
+    "order_number":"order number" ,
+    "The_password_has_been_changed_successfully":"The password has been changed successfully" ,
+    "Enter_the_verification_code_sent_to_your_mobile_phone" :"Enter the verification code sent to your mobile phone" ,
+    "The_change_was_made_successfully":"The change was made successfully" ,
+    "myorder" :"my order" ,
+    "Order_details":"Order details",
+    "Main_section":"Main section " ,
+    "Subsection" :" Subsection " ,
+    "Description_of_the_request":" Description of the request " ,
+    "Do_you_really_want_to_delete_the_order":"Do you really want to delete the order?",
+    "yes" : " yes" , 
+    "no":"no"  ,
+    "nameofOrder" :"name of order ",
+    "The_request_has_been_successfully_deleted" :"The request has been successfully deleted",
+    "Back_to_order":"Back to order"
+
+
+
+
+
+
+
+
+    
+
 }
