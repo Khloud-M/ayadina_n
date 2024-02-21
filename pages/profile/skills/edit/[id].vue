@@ -3,7 +3,7 @@
   <div class="row justify-content-center">
     <div class="col-md-10">
       <form
-        @submit.prevent="addSkill"
+        @submit.prevent="editSkills"
         enctype="multipart/form-data"
         ref="editSkill"
       >
@@ -14,33 +14,32 @@
           اسم المهارة باللغة الانجليزية
         </inputs-form-control>
 
-        <!-- <div class="form-group">
-            <label class="form-label">
-              <span class="m-end-5">   القسم الرئيسيي</span>
-              <span class="text-danger">*</span>
-            </label>
-            <Dropdown
-              v-model="selectedCategory"
-              :options="categories"
-              optionLabel="name"
-              class="w-100 form-control d-flex justify-content-between"
-              @change="selectedsubCategory"
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-label">
-              <span class="m-end-5">   القسم الفرعي </span>
-              <span class="text-danger">*</span>
-            </label>
-            <Dropdown
-              v-model="selectedsubCategory"
-              :options="subCategories"
-              optionLabel="name"
-              class="w-100 form-control d-flex justify-content-between"
-              @change="selectRegions"
-            />
-          </div> -->
-     
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5"> القسم الرئيسيي</span>
+            <span class="text-danger">*</span>
+          </label>
+          <Dropdown
+            v-model="selectedCategory"
+            :options="categories"
+            optionLabel="name"
+            class="w-100 form-control d-flex justify-content-between"
+            @change="selectedsubCategory"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <span class="m-end-5"> القسم الفرعي </span>
+            <span class="text-danger">*</span>
+          </label>
+          <Dropdown
+            v-model="selectsubCategory"
+            :options="subCategories"
+            optionLabel="name"
+            class="w-100 form-control d-flex justify-content-between"
+          />
+        </div>
+
         <inputs-form-control textarea id="descripe" v-model="descriptionAr">
           وصف المهارة
         </inputs-form-control>
@@ -76,41 +75,41 @@
             class="w-100"
           />
         </div>
-<div v-if="imgs.length != 0">
-  <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
-          <InputsImgInput
-            v-for="(img, index) in imgs"
-            :key="img.id"
-            :index="index"
-            :modelValue="img.image"
-            id="profileImg"
-            @update:modelValue="updateImageUrl"
-            @removeImage="removeImage"
-            @change="handleImageUpload"
-            name="image"
-          />
+        <div v-if="imgs.length != 0">
+          <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+            <InputsImgInput
+              v-for="(img, index) in imgs"
+              :key="img.id"
+              :index="index"
+              :modelValue="img.image"
+             
+              @update:modelValue="updateImageUrl"
+              @removeImage="removeImage"
+              @change="handleImageUpload"
+              :name="`img${index}`"
+              :id="`img${index}`"
+
+            />
+          </div>
         </div>
-</div>
-<div v-else>
-  <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
-          <InputsImgInput id="profileImg" @update:modelValue="updateImageUrl('img', $event)"
-            @removeImage="removeImage('img')" name="img" />
-          <InputsImgInput :modelValue="img2" id="profileImg2" @update:modelValue="updateImageUrl('img2', $event)"
-            @removeImage="removeImage('img2')" name="img2" />
-          <InputsImgInputf :modelValue="img3" id="profileImg3" @update:modelValue="updateImageUrl('img3', $event)"
-            @removeImage="removeImage('img3')" name="img3" />
-          <InputsImgInput :modelValue="img4" id="profileImg4" @update:modelValue="updateImageUrl('img4', $event)"
-            @removeImage="removeImage('img4')" name="img4" />
-          <InputsImgInput :modelValue="img5" id="profileImg5" @update:modelValue="updateImageUrl('img5', $event)"
-            @removeImage="removeImage('img5')" name="img5" />
+        <div v-else>
+          <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+            <InputsImgInput
+              v-for="i in 5"
+              :key="`defaultImg${i}`"
+              :modelValue="null"
+              :index="i - 1"
+              :id="`img${index}`"
+              :name="`img${index}`"
+              @update:modelValue="updateImageUrl"
+              @removeImage="removeImage"
+            />
+          </div>
         </div>
-</div>
-      
 
         <div class="flex-center">
-          <baseButton class="main_btn lg" @click="visible = true" label="Show">
-            تعديل مهارة</baseButton
-          >
+          <ui-base-button class="main_btn lg" @click="visible = true" label="Show">
+            تعديل مهارة</ui-base-button>
         </div>
       </form>
     </div>
@@ -131,7 +130,7 @@
         mode="main_btn"
         @click="visible = false"
         link
-        :to="'/skillDetails/' + this.selectedSkill.id"
+        :to="'/profile/skills/' + this.selectedSkill.id"
       >
         رجوع
       </ui-base-button>
@@ -174,16 +173,16 @@ export default {
       lang: useNuxtApp().$i18n.locale,
       selectedCityIds: [],
       selectedCategory: null ,
-      selectedsubCategory: null ,
+      selectsubCategory: null,
       subCategories: [],
       categories: [],
       nameAr: "",
       nameEn: "",
       descriptionAr: "",
       descriptionEn: "",
-   
+
       selectedCityIds: null,
-      img2: "../assets/imgs/logo1.png",
+
     };
   },
 
@@ -193,13 +192,15 @@ export default {
     },
     removeImage(index) {
       this.imageUrl = "";
-      this.imgs.splice(index, 1);
+      this.selectedSkill.images.splice(index, 1);
+      console.log(this.selectedSkill.images)
     },
-    selectSubCategory() {
+    selectedsubCategory() {
       this.axios
-        .get(`sub-categories/${this.selectedCity.id}`)
+        .get(`sub-categories/${this.selectedCategory.id}`)
         .then((response) => {
           this.subCategories = response.data.data;
+          console.log(this.subCategories)
         })
         .catch(function (error) {
           console.log(error);
@@ -220,7 +221,6 @@ export default {
           })
           .catch((error) => {
             console.error(
-              `Error fetching regions for city ID ${cityId}:`,
               error
             );
             F;
@@ -228,30 +228,59 @@ export default {
       }
       // Make the API request to fetch regions based on selected cities
     },
-    // async editSkills() {
-    //   this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
-    //   this.imgsId = this.imgs.map((img) => img.id);
-    //   console.log(this.selectRegions , this.imgsId)
-    //   const formData = new FormData(this.$refs.form);
+    async editSkills() {
+      // `edit-skill/useTouter`
+       // this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
+      // this.selectedCitiesIds = this.selectedCities.map((city) => city.id);
+      console.log(this.selectedRegions, this.selectedCities)
+      // this.imgsId = this.imgs.map((img) => img.id);
+      // console.log(this.nameAr , this.nameEn , this.descriptionEn , this.descriptionEn , this.selectedCategory.id , this.selectedsubCategory.id , this.selectedRegionsIds);
+      const formData = new FormData(this.$refs.addSkill);
 
-    //   // Append other form data fields
-    //   formData.append("title[ar]", this.nameAr);
-    //   formData.append("title[en]", this.nameEn);
-    //   formData.append("description[ar]", this.descriptionAr);
-    //   formData.append("description[en]", this.descriptionEn);
-    //   formData.append("category_id", this.selectedsubCategory.id);
-    //   formData.append("sub_category_id", this.selectedsubCategory.id);
-    //   formData.append('city_ids[]' ,  this.selectedRegionsIds)
-    //   formData.append('region_ids[]' , this.selectedRegionsIds)
-    //   formData.append('images' , this.selectedRegions.id )
+      // Append other form data fields
+      formData.append("title[ar]", this.nameAr);
+      formData.append("title[en]", this.nameEn);
+      formData.append("description[ar]", this.descriptionAr);
+      formData.append("description[en]", this.descriptionEn);
+      formData.append("category_id", this.selectedCategory.id);
+      formData.append("sub_category_id", this.selectsubCategory.id);
+      // formData.append("city_ids[]", this.selectedCities.map(city => city.id));
+      // formData.append("region_ids[]", this.selectedRegions.map(region => region.id));
+      for (let i = 0; i < this.selectedCities.length; i++) {
+    formData.append("city_ids[]", this.selectedCities[i].id);
+  }
+
+  // Append region_ids
+  for (let i = 0; i < this.selectedRegions.length; i++) {
+    formData.append("region_ids[]", this.selectedRegions[i].id);
+  }
+      // formData.append("images", this.img.id);
+      console.log(formData)
+      await this.axios
+        .post(
+          `edit-skill/${useRoute().params.id}`, formData ,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+
+        )
+        .then((res) => {
+          if(res.data.msg === success){
+            alert('yes')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
 
 
-
-    // },
-  },
+    },
 
   mounted() {
-    
+    this.token = useAuthStore().token;
     this.axios
       .get("/cities")
       .then((response) => {
@@ -261,8 +290,18 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
-    console.log(this.lang);
-    this.token = useAuthStore().token;
+
+
+    this.axios
+        .get('/categories')
+        .then((response) => {
+          this.categories = response.data.data.categories;
+        console.log(this.categories)
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
 
     this.axios
       .get(`skill-details/${useRoute().params.id}`, {
@@ -277,11 +316,11 @@ export default {
         this.descriptionAr = this.selectedSkill.description.ar;
         this.descriptionEn = this.selectedSkill.description.en;
         this.selectedCategory = this.selectedSkill.category;
-        this.selectedsubCategory = this.selectedSkill.sub_category;
+        this.selectsubCategory = this.selectedSkill.sub_category;
         this.selectedRegions = this.selectedSkill.regions;
         this.selectedCities = this.selectedSkill.cities;
         this.imgs = this.selectedSkill.images;
-       
+
         this.selectedCityIds = this.selectedCities.map((city) => city.id);
         this.regions = [];
         for (const cityId of this.selectedCityIds) {
@@ -294,26 +333,25 @@ export default {
               this.regions.push(...regionsForCity);
             })
             .catch((error) => {
-              console.error(
-                `Error fetching regions for city ID ${cityId}:`,
-                error
-              );
-              F;
+              console.error(error);
             });
         }
-        console.log(this.selectedSkill.images.length)
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      this.axios
-        .get('/categories')
+
+        this.axios
+        .get(`sub-categories/${this.selectedCategory.id}`)
         .then((response) => {
-          this.categories = response.data.data;
+          this.subCategories = response.data.data;
+          console.log(this.subCategories)
         })
         .catch(function (error) {
           console.log(error);
         });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+     console.log(this.selectedSkill.sub_category)
+
   },
 };
 </script>
@@ -324,3 +362,4 @@ export default {
   margin: 0 !important;
 }
 </style>
+Sent 24m ago Write to

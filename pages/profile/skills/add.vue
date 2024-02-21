@@ -223,9 +223,17 @@ export default {
       formData.append("description[en]", this.descriptionEn);
       formData.append("category_id", this.selectedCategory.id);
       formData.append("sub_category_id", this.selectedsubCategory.id);
-      formData.append("city_ids[]", this.selectedCities.map(city => city.id));
-      formData.append("region_ids[]", this.selectedRegions.map(region => region.id));
+      // formData.append("city_ids[]", this.selectedCities.map(city => city.id));
+      // formData.append("region_ids[]", this.selectedRegions.map(region => region.id));
       // formData.append("images", this.img.id);
+      for (let i = 0; i < this.selectedCities.length; i++) {
+    formData.append("city_ids[]", this.selectedCities[i].id);
+  }
+
+  // Append region_ids
+  for (let i = 0; i < this.selectedRegions.length; i++) {
+    formData.append("region_ids[]", this.selectedRegions[i].id);
+  }
       console.log(formData)
       await this.axios
         .post(
@@ -233,6 +241,7 @@ export default {
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
+              'Content-Type': 'multipart/form-data', 
             },
           }
           

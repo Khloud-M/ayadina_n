@@ -4,7 +4,7 @@
       <font-awesome-icon icon="fa-solid fa-xmark" />
     </div>
     <label :for="id" class="base-image-input">
-      <img v-if="imageUrl" :src="imageUrl" alt="Image Preview" :alt="'Image Preview ' + index" />
+      <img v-if="imageUrl" :src="imageUrl" alt="Image Preview"  />
       <span v-if="!imageUrl" class="select">
         <font-awesome-icon icon="fa-solid fa-upload" />
       </span>
@@ -63,11 +63,16 @@ export default {
         this.$emit("update:modelValue", null);
       }
     },
+    // removeImage() {
+    //   this.imageUrl = null;
+    //   this.$emit("update:modelValue", null);
+    //   this.$emit("removeImage", this.index);
+    // },
     removeImage() {
-      this.imageUrl = null;
-      this.$emit("update:modelValue", null);
-      this.$emit("removeImage", this.index);
-    },
+    this.imageUrl = null;
+    this.$emit("update:modelValue", null);
+    this.$emit("removeImage", this.index); // Emit the name of the image
+  },
   },
 };
 </script>
