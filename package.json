@@ -50,8 +50,5 @@
     "vue3-otp-input": "^0.4.1",
     "vue3-verification-code-input": "^0.1.0",
     "vuex": "^4.0.2"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }

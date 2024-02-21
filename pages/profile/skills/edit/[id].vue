@@ -14,7 +14,7 @@
           اسم المهارة باللغة الانجليزية
         </inputs-form-control>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label class="form-label">
               <span class="m-end-5">   القسم الرئيسيي</span>
               <span class="text-danger">*</span>
@@ -39,7 +39,7 @@
               class="w-100 form-control d-flex justify-content-between"
               @change="selectRegions"
             />
-          </div>
+          </div> -->
      
         <inputs-form-control textarea id="descripe" v-model="descriptionAr">
           وصف المهارة
@@ -76,8 +76,8 @@
             class="w-100"
           />
         </div>
-
-        <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+<div v-if="imgs.length != 0">
+  <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
           <InputsImgInput
             v-for="(img, index) in imgs"
             :key="img.id"
@@ -90,6 +90,22 @@
             name="image"
           />
         </div>
+</div>
+<div v-else>
+  <div class="d-flex align-items-center gap-10 flex-wrap mb-3">
+          <InputsImgInput id="profileImg" @update:modelValue="updateImageUrl('img', $event)"
+            @removeImage="removeImage('img')" name="img" />
+          <InputsImgInput :modelValue="img2" id="profileImg2" @update:modelValue="updateImageUrl('img2', $event)"
+            @removeImage="removeImage('img2')" name="img2" />
+          <InputsImgInputf :modelValue="img3" id="profileImg3" @update:modelValue="updateImageUrl('img3', $event)"
+            @removeImage="removeImage('img3')" name="img3" />
+          <InputsImgInput :modelValue="img4" id="profileImg4" @update:modelValue="updateImageUrl('img4', $event)"
+            @removeImage="removeImage('img4')" name="img4" />
+          <InputsImgInput :modelValue="img5" id="profileImg5" @update:modelValue="updateImageUrl('img5', $event)"
+            @removeImage="removeImage('img5')" name="img5" />
+        </div>
+</div>
+      
 
         <div class="flex-center">
           <baseButton class="main_btn lg" @click="visible = true" label="Show">
@@ -212,29 +228,30 @@ export default {
       }
       // Make the API request to fetch regions based on selected cities
     },
-    async editSkills() {
-      this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
-      this.imgsId = this.imgs.map((img) => img.id);
-      console.log(this.selectRegions , this.imgsId)
-      const formData = new FormData(this.$refs.form);
+    // async editSkills() {
+    //   this.selectedRegionsIds = this.selectedRegions.map((region) => region.id);
+    //   this.imgsId = this.imgs.map((img) => img.id);
+    //   console.log(this.selectRegions , this.imgsId)
+    //   const formData = new FormData(this.$refs.form);
 
-      // Append other form data fields
-      formData.append("title[ar]", this.nameAr);
-      formData.append("title[en]", this.nameEn);
-      formData.append("description[ar]", this.descriptionAr);
-      formData.append("description[en]", this.descriptionEn);
-      formData.append("category_id", this.selectedsubCategory.id);
-      formData.append("sub_category_id", this.selectedsubCategory.id);
-      formData.append('city_ids[]' ,  this.selectedRegionsIds)
-      formData.append('region_ids[]' , this.selectedRegionsIds)
-      formData.append('images' , this.selectedRegions.id )
+    //   // Append other form data fields
+    //   formData.append("title[ar]", this.nameAr);
+    //   formData.append("title[en]", this.nameEn);
+    //   formData.append("description[ar]", this.descriptionAr);
+    //   formData.append("description[en]", this.descriptionEn);
+    //   formData.append("category_id", this.selectedsubCategory.id);
+    //   formData.append("sub_category_id", this.selectedsubCategory.id);
+    //   formData.append('city_ids[]' ,  this.selectedRegionsIds)
+    //   formData.append('region_ids[]' , this.selectedRegionsIds)
+    //   formData.append('images' , this.selectedRegions.id )
 
 
 
-    },
+    // },
   },
 
   mounted() {
+    
     this.axios
       .get("/cities")
       .then((response) => {
@@ -284,6 +301,7 @@ export default {
               F;
             });
         }
+        console.log(this.selectedSkill.images.length)
       })
       .catch(function (error) {
         console.log(error);
